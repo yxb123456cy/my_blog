@@ -4,11 +4,8 @@ date: 2025-04-27
 tags:
   - 前端面经
 ---
-前端面试题之computed和watch的区别
----
 
-
-
+## 前端面试题之computed和watch的区别
 
 在现代前端的面试中，vue和react是面试过程中基本必问的技术栈，其中在聊到Vue响应式话题时，`watch和computed`是面试官非常喜欢聊的主题，虽然`watch`和`computed`它们都用于监听数据的变化，但它们在实现原理、使用场景和行为上有着显著的区别。本文将深入探讨`watch`和`computed`的原理和区别，并提供一些面试过程中的建议。
 
@@ -97,13 +94,12 @@ class Watcher {
   <div>
     <p>Count: {{ count }}</p>
     <p>Doubled Count: {{ doubledCount }}</p>
-    <button > Increment Count</button>
+    <button>Increment Count</button>
   </div>
 </template>
 
 <script setup>
-
-import { ref, watch } from 'vue';
+import { ref, watch } from "vue";
 
 const count = ref(0);
 const doubledCount = ref(0);
@@ -117,7 +113,6 @@ watch(count, (newVal, oldVal) => {
   doubledCount.value = newVal * 2;
 });
 </script>
-
 ```
 
 在这个示例中，我们使用 `<script setup>` 来导入 `ref` 和 `watch`，并创建了 `count` 和 `doubledCount` 的响应式变量。然后，我们使用 `watch` 来监听 `count` 的变化，并在 `count` 变化时更新 `doubledCount` 的值。
@@ -208,7 +203,7 @@ class ComputedRefImpl<T> {
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
 
 const count = ref(0);
 
@@ -232,25 +227,21 @@ const incrementCount = () => {
 ### 区别
 
 1.  **响应方式**：
-
     - `watch`用于监视数据的变化，它允许你执行副作用。
     - `computed`用于派生出一个新的计算属性，它的值会根据依赖项的变化而变化。
 
 2.  **缓存**：
-
     - `watch`不会缓存结果，每次数据变化都会触发回调。
     - `computed`会缓存计算结果，只有在依赖项变化时才会重新计算。
 
 ### 使用场景
 
 1.  **watch的使用场景**：
-
     - 异步操作：当你需要在数据变化时执行异步操作，如发送网络请求。
     - 副作用：执行一些与数据变化相关的操作，如日志记录或触发动画。
     - 监听多个数据的变化并执行不同的操作。
 
 2.  **computed的使用场景**：
-
     - 派生属性：当你需要从现有数据派生出新的属性，以便在模板中使用。
     - 避免重复计算：当某个计算较为昂贵，但其依赖项不经常变化时，使用`computed`可以避免不必要的计算。
 

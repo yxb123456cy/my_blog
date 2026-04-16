@@ -4,8 +4,9 @@ date: 2025-06-17
 tags:
   - vue
 ---
-前端进阶之自定义封装Hook
----
+
+## 前端进阶之自定义封装Hook
+
 ## 什么是 Hook
 
 Vue3 官方文档是这样定义组合式函数的。`A "composable" is a function that leverages Vue's Composition API to encapsulate and reuse stateful logic.`，一个利用 Vue 的组合式 API 来封装和复用具有状态逻辑的函数。
@@ -64,29 +65,14 @@ React 官方为我们提供了一些非常方便的 Hook 函数，比如 useStat
 当然，我们需要在外部定义这个 Hook：
 
 ```vue
-// mouse.js
-import { ref, onMounted, onUnmounted } from "vue";
-
-// 按照惯例，组合式函数名以“use”开头
-export function useMouse() {
-  // 被组合式函数封装和管理的状态
-  const x = ref(0);
-  const y = ref(0);
-
-  // 组合式函数可以随时更改其状态。
-  function update(event) {
-    x.value = event.pageX;
-    y.value = event.pageY;
-  }
-
-  // 一个组合式函数也可以挂靠在所属组件的生命周期上
-  // 来启动和卸载副作用
-  onMounted(() => window.addEventListener("mousemove", update));
-  onUnmounted(() => window.removeEventListener("mousemove", update));
-
-  // 通过返回值暴露所管理的状态
-  return { x, y };
-}
+// mouse.js import { ref, onMounted, onUnmounted } from "vue"; //
+按照惯例，组合式函数名以“use”开头 export function useMouse() { //
+被组合式函数封装和管理的状态 const x = ref(0); const y = ref(0); //
+组合式函数可以随时更改其状态。 function update(event) { x.value = event.pageX;
+y.value = event.pageY; } // 一个组合式函数也可以挂靠在所属组件的生命周期上 //
+来启动和卸载副作用 onMounted(() => window.addEventListener("mousemove",
+update)); onUnmounted(() => window.removeEventListener("mousemove", update)); //
+通过返回值暴露所管理的状态 return { x, y }; }
 ```
 
 或许，你可以试着去 VueUse 库找到别人封装好的 useMouse！
@@ -136,35 +122,12 @@ onMounted(refresh);
 模拟 api：
 
 ```vue
-// api.ts
-export const getTableDataApi = () => {
-  const data = [
-    {
-      date: "2016-05-03",
-      name: "Tom",
-      address: "No. 189, Grove St, Los Angeles",
-    },
-    {
-      date: "2016-05-02",
-      name: "Tom",
-      address: "No. 189, Grove St, Los Angeles",
-    },
-    {
-      date: "2016-05-04",
-      name: "Tom",
-      address: "No. 189, Grove St, Los Angeles",
-    },
-    {
-      date: "2016-05-01",
-      name: "Tom",
-      address: "No. 189, Grove St, Los Angeles",
-    },
-  ];
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(data);
-    }, 100);
-  });
+// api.ts export const getTableDataApi = () => { const data = [ { date:
+"2016-05-03", name: "Tom", address: "No. 189, Grove St, Los Angeles", }, { date:
+"2016-05-02", name: "Tom", address: "No. 189, Grove St, Los Angeles", }, { date:
+"2016-05-04", name: "Tom", address: "No. 189, Grove St, Los Angeles", }, { date:
+"2016-05-01", name: "Tom", address: "No. 189, Grove St, Los Angeles", }, ];
+return new Promise((resolve) => { setTimeout(() => { resolve(data); }, 100); });
 };
 ```
 
@@ -202,16 +165,9 @@ onMounted(refresh1);
 封装我们的 useTable：
 
 ```vue
-// useTable.ts
-import { ref } from "vue";
-export function useTable(api) {
-  const data = ref([]);
-  const refresh = () => {
-    api().then((res) => (data.value = res));
-  };
-  refresh();
-  return [data, refresh];
-}
+// useTable.ts import { ref } from "vue"; export function useTable(api) { const
+data = ref([]); const refresh = () => { api().then((res) => (data.value = res));
+}; refresh(); return [data, refresh]; }
 ```
 
 改造代码：
@@ -237,19 +193,11 @@ onMounted(refresh1);
 3.  返回值如果是对象，一般在函数中通过 reactive 创建一个对象，最后通过 toRefs 导出，这样做的原因是可以产生批量的可以解构的 Ref 对象，以免在解构返回值时丢失响应性。
 
 ```vue
-// 使用 reactive 和 toRefs 可以快速创建多个ref对象，并在解构后使用时不丢失其响应性和与原先数据的关联性
-function usePaginaion(){
-	const pagination = reactive({
-		current: 1,
-		total: 0,
-		sizeOption,
-		size: sizeOption[0]
-	})
-	...
-	return {...toRefs(pagination)}
-}
-
-const { current,total } = usePagination()
+// 使用 reactive 和 toRefs
+可以快速创建多个ref对象，并在解构后使用时不丢失其响应性和与原先数据的关联性
+function usePaginaion(){ const pagination = reactive({ current: 1, total: 0,
+sizeOption, size: sizeOption[0] }) ... return {...toRefs(pagination)} } const {
+current,total } = usePagination()
 ```
 
 ## 封装二（支持分页查询）
@@ -394,7 +342,7 @@ onMounted(refresh);
 import { reactive } from "vue";
 export function usePagination(
   cb: any,
-  sizeOption: Array<number> = [10, 20, 50, 100, 200]
+  sizeOption: Array<number> = [10, 20, 50, 100, 200],
 ): any {
   const pagination = reactive({
     current: 1,
@@ -443,7 +391,7 @@ export function useTable(api: (params: any) => Promise<T>) {
       (res) => {
         data.value = res.data;
         setTotal(res.total);
-      }
+      },
     );
   };
   return [data, refresh, pagination];
@@ -597,15 +545,11 @@ useTable(xxxApi,{immediate:false})
 只要该位置的值非 undefined，那么 options 将不会使用默认值，这意味着，此时 options 的值为 `{immediate:false}`，其它地方的默认值不会生效，`{path:undefined,}`。 所以对于函数参数为对象的，我们往往通过在函数体内赋默认值，比如：
 
 ```vue
-保证options只传入一个值，其它位置也会有默认值
-{
-  options.path = options.path || {}
-  options.path.data = options.path.data || 'data'
-  options.path.total = options.path.total || 'total'
-  options.path.page = options.path.page || 'page'
-  options.path.size = options.path.size || 'size'
-  options.immediate = options.immediate ?? false
-}
+保证options只传入一个值，其它位置也会有默认值 { options.path = options.path ||
+{} options.path.data = options.path.data || 'data' options.path.total =
+options.path.total || 'total' options.path.page = options.path.page || 'page'
+options.path.size = options.path.size || 'size' options.immediate =
+options.immediate ?? false }
 ```
 
 需要注意元素的层次，在不存在 path 时，给 path. data 赋值会出现错误，需要先保证 path 有值，才能给 path 的下一层赋值。
@@ -613,10 +557,8 @@ useTable(xxxApi,{immediate:false})
 使用 defaults 可以快速给整个对象赋默认值：
 
 ```vue
-defaults(options, {
-  path: { data: "data", total: "total", page: "page", size: "size" },
-  immediate: false,
-});
+defaults(options, { path: { data: "data", total: "total", page: "page", size:
+"size" }, immediate: false, });
 ```
 
 ## 封装四（接口传参-定义时）
@@ -635,17 +577,9 @@ defaults(options, {
 首先我们想一想那里可以接受 api 的参数？
 
 ```vue
-const params = {
-  id: 2,
-};
-
-// api本身
-getTableDataApi({ limit: 3, page: 2, ...params });
-
-// useTable也可以接受参数
-const [data, refresh] = useTable(getTableDataApi, params, api);
-
-// refresh也可以接受参数
+const params = { id: 2, }; // api本身 getTableDataApi({ limit: 3, page: 2,
+...params }); // useTable也可以接受参数 const [data, refresh] =
+useTable(getTableDataApi, params, api); // refresh也可以接受参数
 refresh(params);
 ```
 
@@ -654,34 +588,22 @@ refresh(params);
 方案一：在调用 useTable 的时候就接受参数，在 useTable 内部将这个参数传给 refresh。 存在问题：如果我们传入的是值类型，那么这个值会被拷贝过去，并传给 refresh，后续调用 refresh，都是不变的参数。只适合需要传参但参数之后都不会变的接口，比如接受当前用户的 id。如果参数会变，这种方法是不行的。
 
 ```vue
-function useTable(api,id,options){
-	...
-	const refresh=()=>api(id).then(res=>data=res)
-	return [data,refresh]
-}
-
-const [data,refresh]=useTable(api,id)
-refresh()
-refresh() // 都是id=2
+function useTable(api,id,options){ ... const
+refresh=()=>api(id).then(res=>data=res) return [data,refresh] } const
+[data,refresh]=useTable(api,id) refresh() refresh() // 都是id=2
 ```
 
 如果我们传入的是引用类型，那么在后续调用中，我们可以通过改变对象的属性值来改变 refresh 的参数（但是需要一些技巧，因为我们需要和分页参数进行结合）。
 
 ```vue
-const params = { id:12 }
-function useTable(api,params,options){
-	...
-	// 错误，使用解构会丢失与原来对象的联系，导致原来的对象params更改，但这里仍使用旧值。
-	const refresh=()=>api({[options.path.size]:pagination.size,[options.path.page]:pagination.page,...params}).then(res=>data=res)
-	// 正确，可以保持与外部params的联系。
-	const refresh=()=>api(Object.assign(params,{[options.path.size]:pagination.size,[options.path.page]:pagination.page})).then(res=>data=res)
-	return [data,refresh]
-}
-
-const [data,refresh]=useTable(api,params)
-refresh() // id=12
-params.id = 10
-refresh() // id=10
+const params = { id:12 } function useTable(api,params,options){ ... //
+错误，使用解构会丢失与原来对象的联系，导致原来的对象params更改，但这里仍使用旧值。
+const
+refresh=()=>api({[options.path.size]:pagination.size,[options.path.page]:pagination.page,...params}).then(res=>data=res)
+// 正确，可以保持与外部params的联系。 const
+refresh=()=>api(Object.assign(params,{[options.path.size]:pagination.size,[options.path.page]:pagination.page})).then(res=>data=res)
+return [data,refresh] } const [data,refresh]=useTable(api,params) refresh() //
+id=12 params.id = 10 refresh() // id=10
 ```
 
 这样，我们就实现了 api 参数的传递，而且如果 params 的属性 id 是响应式的，还可以与页面结合，实现搜索功能！然而，使用同一个引用 params，可以解决传参问题，但是还是存在一些问题：在 refresh 中，Object. assign 会给原来的对象 params 增加两个属性，要注意避免在 params 中与这两个属性发生冲突。另外，我们可以看到这里的参数间存在了一种优先级，就是如果我们在 param 中也传入了分页参数，会在 refresh 中被 pagination 的分页参数覆盖调，pagination 的分页参数比 params 中的分页参数优先级更高，这样好吗？
@@ -691,18 +613,11 @@ refresh() // id=10
 方案二：试试 useTable 接受传入函数 params 如何？
 
 ```vue
-const params={id:12}
-const paramsFn =()=>{ id: params.id }
-function useTable(api,paramsFn(),options){
-	...
-	const refresh=()=>api(Object.assign(paramsFn(),{[options.path.size]:pagination.size,[options.path.page]:pagination.page})).then(res=>data=res)
-	return [data,refresh]
-}
-
-const [data,refresh]=useTable(api,paramsFn)
-refresh() // id=12
-params.id = 10
-refresh() // id=10
+const params={id:12} const paramsFn =()=>{ id: params.id } function
+useTable(api,paramsFn(),options){ ... const
+refresh=()=>api(Object.assign(paramsFn(),{[options.path.size]:pagination.size,[options.path.page]:pagination.page})).then(res=>data=res)
+return [data,refresh] } const [data,refresh]=useTable(api,paramsFn) refresh() //
+id=12 params.id = 10 refresh() // id=10
 ```
 
 完美解决。
@@ -714,49 +629,49 @@ export function useTable<T>(
   api: (params: any) => Promise<T>,
   params?: object | (() => object),
   options?: {
-    path?: { data?: keyPath; total?: keyPath; page?: string; size?: string }
-    immediate?: boolean
+    path?: { data?: keyPath; total?: keyPath; page?: string; size?: string };
+    immediate?: boolean;
   },
 ) {
   // 参数处理
   defaults(options, {
-    path: { data: 'data', total: 'total', page: 'page', size: 'size' },
+    path: { data: "data", total: "total", page: "page", size: "size" },
     immediate: false,
-  })
+  });
 
-  const [pagination, , , setTotal] = usePagination(() =>refresh())
-  const loading = ref(false)
-  const data = ref([])
+  const [pagination, , , setTotal] = usePagination(() => refresh());
+  const loading = ref(false);
+  const data = ref([]);
 
   const refresh = (extraData?: object | (() => object)) => {
     const requestData = {
       [options?.path?.page as string]: pagination.current,
       [options?.path?.size as string]: pagination.size,
-    }
+    };
     if (params) {
-      if (typeof params === 'function') {
-        Object.assign(requestData, params())
+      if (typeof params === "function") {
+        Object.assign(requestData, params());
       } else {
-        Object.assign(requestData, params)
+        Object.assign(requestData, params);
       }
     }
-    loading.value = true
+    loading.value = true;
     return api(requestData)
       .then((res) => {
-        data.value = get(res, options!.path?.data, [])
-        setTotal(get(res, options!.path?.total, 0))
+        data.value = get(res, options!.path?.data, []);
+        setTotal(get(res, options!.path?.total, 0));
         if (!has(res, options!.path?.data) || !has(res, options!.path?.total)) {
-          console.warn('useTable：响应数据缺少所需字段')
+          console.warn("useTable：响应数据缺少所需字段");
         }
       })
       .finally(() => {
-        loading.value = false
-      })
-  }
+        loading.value = false;
+      });
+  };
 
-  options!.immediate && refresh()
+  options!.immediate && refresh();
 
-  return [data as T, refresh, loading, pagination]
+  return [data as T, refresh, loading, pagination];
 }
 ```
 
@@ -772,11 +687,16 @@ export function useTable<T>(
 
 ```vue
 <template>
-	<ul>
-		// 自定义组件，点击时emit发送onClick事件并传入item的id
-		<Item v-for="item in list" :key="item.key" :label="item.label" @on-click="handleClick" />
-		...
-	</ul>
+  <ul>
+    // 自定义组件，点击时emit发送onClick事件并传入item的id
+    <Item
+      v-for="item in list"
+      :key="item.key"
+      :label="item.label"
+      @on-click="handleClick"
+    />
+    ...
+  </ul>
 </template>
 
 <script>
@@ -812,58 +732,58 @@ export function useTable<T>(
   api: (params: any) => Promise<T>,
   params?: object | (() => object),
   options?: {
-    path?: { data?: keyPath; total?: keyPath; page?: string; size?: string }
-    immediate?: boolean
+    path?: { data?: keyPath; total?: keyPath; page?: string; size?: string };
+    immediate?: boolean;
   },
 ) {
   defaults(options, {
-    path: { data: 'data', total: 'total', page: 'page', size: 'size' },
+    path: { data: "data", total: "total", page: "page", size: "size" },
     immediate: false,
-  })
+  });
 
   // 使用()=>fn()而不是fn()区别在于后者只是一个值且立即执行
   const [pagination, , , setTotal] = usePagination((extraData?: object) =>
     extraData ? refresh(extraData) : refresh(),
-  )
-  const loading = ref(false)
-  const data = ref([])
+  );
+  const loading = ref(false);
+  const data = ref([]);
 
   const refresh = (extraData?: object | (() => object)) => {
     const requestData = {
       [options?.path?.page as string]: pagination.current,
       [options?.path?.size as string]: pagination.size,
-    }
+    };
     if (extraData) {
-      if (typeof extraData === 'function') {
-        Object.assign(requestData, extraData())
+      if (typeof extraData === "function") {
+        Object.assign(requestData, extraData());
       } else {
-        Object.assign(requestData, extraData)
+        Object.assign(requestData, extraData);
       }
     }
     if (params) {
-      if (typeof params === 'function') {
-        Object.assign(requestData, params())
+      if (typeof params === "function") {
+        Object.assign(requestData, params());
       } else {
-        Object.assign(requestData, params)
+        Object.assign(requestData, params);
       }
     }
-    loading.value = true
+    loading.value = true;
     return api(requestData)
       .then((res) => {
         // TODO 检查响应状态码
-        data.value = get(res, options!.path?.data, [])
-        setTotal(get(res, options!.path?.total, 0))
+        data.value = get(res, options!.path?.data, []);
+        setTotal(get(res, options!.path?.total, 0));
         // 友好提示
         if (!has(res, options!.path?.data) || !has(res, options!.path?.total)) {
-          console.warn('useTable：响应数据缺少所需字段')
+          console.warn("useTable：响应数据缺少所需字段");
         }
       })
       .finally(() => {
-        loading.value = false
-      })
-  }
+        loading.value = false;
+      });
+  };
 
-	return[data,refresh,paginaiton,loading]
+  return [data, refresh, paginaiton, loading];
 }
 ```
 
@@ -880,30 +800,30 @@ export function usePagination(
     size: sizeOption[0],
     sizeOption,
     onPageChange: (page: number, extraData?: object) => {
-      pagination.current = page
-      return extraData ? cb(extraData) : cb()
+      pagination.current = page;
+      return extraData ? cb(extraData) : cb();
     },
     onSizeChange: (size: number, extraData?: object) => {
-      pagination.current = 1
-      pagination.size = size
-      return extraData ? cb(extraData) : cb()
+      pagination.current = 1;
+      pagination.size = size;
+      return extraData ? cb(extraData) : cb();
     },
     setTotal: (total: number) => {
-      pagination.total = total
+      pagination.total = total;
     },
     reset() {
-      pagination.current = 1
-      pagination.total = 0
-      pagination.size = pagination.sizeOption[0]
+      pagination.current = 1;
+      pagination.total = 0;
+      pagination.size = pagination.sizeOption[0];
     },
-  })
+  });
 
   return [
     pagination,
     pagination.onPageChange,
     pagination.onSizeChange,
     pagination.setTotal,
-  ]
+  ];
 }
 ```
 
@@ -925,9 +845,7 @@ export function usePagination(
 在此之前，需要保存 item. id 作为全局变量以供读取。
 
 ```vue
-const handleClick=(id:number)=>{
-	params.id=id;
-}
+const handleClick=(id:number)=>{ params.id=id; }
 ```
 
 这样，我们就完成了一个功能相对完善的 Hook 函数。
