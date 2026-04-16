@@ -11,7 +11,7 @@ outline: deep
 </div>
 
 <div align="center">
-  <h3>🙎 Leafy_Coding | 💻 开发爱好者 | 🛸 Jiang Xi , China </h3>
+  <h3>🙎 Leafy_Coding | 💻 全栈开发爱好者 | 🛸 Jiang Xi , China </h3>
 </div>
 
 ---

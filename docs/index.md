@@ -1,16 +1,16 @@
 ---
 layout: home
 lastUpdated: false
-bgImage: 
+bgImage:
   light: "/bg.jpg"
-  dark: '/bg_dark.jpg'
+  dark: "/bg_dark.jpg"
 
 hero:
   name: "Leafy_Coding's blog"
   text: 在路上
   tagline: "\n喧嚣在远处坍缩，独白于静默生长。"
   image:
-    src: /avatar.jpg
+    src: /new_avatar.png
     alt: yi's avatar
     style: "margin-top: 5%; box-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5); border-radius: 50%;"
   actions:

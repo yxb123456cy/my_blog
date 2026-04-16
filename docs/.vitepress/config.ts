@@ -97,7 +97,7 @@ export default defineConfigWithTheme({
       direct: "lft",  // 博客方向（左侧）
       user: {
         name: "Leafy_Coding",  // 用户名
-        avatar: "/avatar.jpg",  // 头像
+        avatar: "/new_avatar.png",  // 头像
         describe: "简单的记录一下秃头过程",  // 用户描述
       },
     },
