@@ -36,7 +36,7 @@ export default defineConfigWithTheme({
       compilerOptions: {
         isCustomElement: (tag) => {
           // 将一些常见的 HTML 标签标记为自定义元素，避免验证
-          return ['link', 'img', 'div', 'span'].includes(tag)
+          return ['link', 'img', 'div', 'span'].indexOf(tag) !== -1
         }
       }
     }
