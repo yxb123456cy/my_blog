@@ -10,7 +10,7 @@ hero:
   text: 在路上
   tagline: "\n喧嚣在远处坍缩，独白于静默生长。"
   image:
-    src: /new_avatar.png
+    src: /QQ-AVATAR.jpg
     alt: yi's avatar
     style: "margin-top: 5%; box-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5); border-radius: 50%;"
   actions:
