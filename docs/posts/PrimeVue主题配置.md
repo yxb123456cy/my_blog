@@ -12,11 +12,11 @@ tags:
 
 在日常的 Vue 项目开发中，我们经常会使用各种 UI 组件库来提升开发效率。PrimeVue 作为一款功能强大且性能优异的组件库，其主题系统尤为出色。无论是开箱即用的预设主题，还是基于设计令牌的深度定制，PrimeVue 都能满足不同场景的需求。
 
-本文将带你全面了解 PrimeVue 4.x 的主题配置方案，从基础的预设主题使用，到利用设计令牌自定义品牌色，再到创建完全独立的主题系统。
+本文将带你全面了解 PrimeVue 4.x 的主题配置方案，从基础的预设主题使用，到利用设计令牌自定义品牌色，再到实现动态主题切换。
 
-### 一、PrimeVue 主题系统概述
+### 一、主题系统概述
 
-PrimeVue 从 4.0 版本开始，推出了全新的主题系统，主要提供两种模式：
+PrimeVue 从 4.0 版本开始推出了全新的主题系统，主要提供两种模式：
 
 - **Styled（样式化）模式**：组件自带样式，通过设计令牌（Design Tokens）进行主题定制
 - **Unstyled（无样式）模式**：组件不携带任何样式，完全由开发者控制
@@ -27,7 +27,7 @@ PrimeVue 从 4.0 版本开始，推出了全新的主题系统，主要提供两
 
 #### 1. 安装依赖
 
-首先需要安装 PrimeVue 和主题包：
+首先安装 PrimeVue 和主题包：
 
 ```bash
 npm install primevue @primeuix/themes
@@ -35,31 +35,31 @@ npm install primevue @primeuix/themes
 
 #### 2. 配置基础主题
 
-在 Vue 应用的入口文件（如 `main.js` 或 `main.ts`）中配置主题：
+在 Vue 应用的入口文件（`main.js` 或 `main.ts`）中配置主题：
 
 ```javascript
-import { createApp } from 'vue';
-import PrimeVue from 'primevue/config';
-import Aura from '@primeuix/themes/aura';
-import App from './App.vue';
+import { createApp } from "vue";
+import PrimeVue from "primevue/config";
+import Aura from "@primeuix/themes/aura";
+import App from "./App.vue";
 
 const app = createApp(App);
 
 app.use(PrimeVue, {
-    theme: {
-        preset: Aura,  // 使用 Aura 作为基础预设
-        options: {
-            darkModeSelector: '.dark-mode'  // 深色模式切换器
-        }
-    }
+  theme: {
+    preset: Aura, // 使用 Aura 作为基础预设
+    options: {
+      darkModeSelector: ".dark-mode", // 深色模式切换器
+    },
+  },
 });
 
-app.mount('#app');
+app.mount("#app");
 ```
 
 PrimeVue 官方提供了多个精美的预设主题：`Aura`、`Lara`、`Material` 等，你可以根据需要选择。
 
-### 三、深度定制：设计令牌（Design Tokens）
+### 三、深度定制：设计令牌
 
 设计令牌是 PrimeVue 主题系统的核心，它将设计属性（颜色、间距、圆角等）抽象为可配置的变量。
 
@@ -67,9 +67,9 @@ PrimeVue 官方提供了多个精美的预设主题：`Aura`、`Lara`、`Materia
 
 官方文档明确说明，设计令牌分为三个层级：
 
-- **原始令牌（Primitive Tokens）**：没有语义含义的基础值，如颜色色阶 `blue-50` 到 `blue-950`
-- **语义令牌（Semantic Tokens）**：有语义含义的令牌，如 `primary.color`、`surface.background`
-- **组件令牌（Component Tokens）**：组件级别的具体样式，如 `button.background`、`input.border`
+- **原始令牌**：没有语义含义的基础值，如颜色色阶 `blue-50` 到 `blue-950`
+- **语义令牌**：有语义含义的令牌，如 `primary.color`、`surface.background`
+- **组件令牌**：组件级别的具体样式，如 `button.background`、`input.border`
 
 ```
 原始令牌 (Primitive Tokens)
@@ -87,48 +87,31 @@ PrimeVue 官方提供了多个精美的预设主题：`Aura`、`Lara`、`Materia
 通过 `definePreset` 函数可以基于预设主题进行定制：
 
 ```javascript
-import { definePreset } from '@primeuix/themes';
-import Aura from '@primeuix/themes/aura';
+import { definePreset } from "@primeuix/themes";
+import Aura from "@primeuix/themes/aura";
 
 const MyPreset = definePreset(Aura, {
-    semantic: {
-        primary: {
-            50: '#fff2eb',
-            100: '#ffe2d5',
-            200: '#ffc4ad',
-            300: '#ffa685',
-            400: '#ff885c',
-            500: '#ff5000',  // 主色调
-            600: '#e64900',  // 悬停状态
-            700: '#bf3d00',  // 激活状态
-            800: '#993100',
-            900: '#732500',
-            950: '#4d1800'
-        },
-        colorScheme: {
-            light: {
-                surface: {
-                    0: '#ffffff',
-                    50: '#f8fafc',
-                    100: '#f1f5f9',
-                    // ... 其他色阶
-                }
-            },
-            dark: {
-                surface: {
-                    0: '#ffffff',
-                    50: '#f8fafc',
-                    // ... 深色模式配置
-                }
-            }
-        }
-    }
+  semantic: {
+    primary: {
+      50: "#fff2eb",
+      100: "#ffe2d5",
+      200: "#ffc4ad",
+      300: "#ffa685",
+      400: "#ff885c",
+      500: "#ff5000", // 主色调
+      600: "#e64900", // 悬停状态
+      700: "#bf3d00", // 激活状态
+      800: "#993100",
+      900: "#732500",
+      950: "#4d1800",
+    },
+  },
 });
 
 app.use(PrimeVue, {
-    theme: {
-        preset: MyPreset
-    }
+  theme: {
+    preset: MyPreset,
+  },
 });
 ```
 
@@ -142,104 +125,88 @@ app.use(PrimeVue, {
 
 ```javascript
 const MyPreset = definePreset(Aura, {
-    semantic: {
-        primary: {
-            500: '#ff5000'
-        }
+  semantic: {
+    primary: {
+      500: "#ff5000",
     },
-    components: {
-        button: {
-            root: {
-                borderRadius: '{border.radius.md}',
-                padding: '0.5rem 1rem',
-                transitionDuration: '0.2s'
-            },
-            // 不同严重程度的按钮颜色
-            severity: {
-                secondary: {
-                    background: '{surface.500}'
-                },
-                help: {
-                    background: '{purple.500}'
-                }
-            }
+  },
+  components: {
+    button: {
+      root: {
+        borderRadius: "{border.radius.md}",
+        padding: "0.5rem 1rem",
+      },
+      severity: {
+        secondary: {
+          background: "{surface.500}",
         },
-        inputtext: {
-            root: {
-                borderColor: '{surface.300}',
-                focusRing: {
-                    width: '2px',
-                    style: 'solid',
-                    color: '{primary.500}'
-                }
-            }
-        }
-    }
+      },
+    },
+    inputtext: {
+      root: {
+        borderColor: "{surface.300}",
+        focusRing: {
+          width: "2px",
+          color: "{primary.500}",
+        },
+      },
+    },
+  },
 });
 ```
 
-### 四、高级功能：动态主题切换
+### 四、动态主题切换
 
-PrimeVue 支持在运行时动态切换主题，这对于需要多主题支持的应用非常有用。
+PrimeVue 支持在运行时动态切换主题：
 
 ```vue
 <script setup>
-import { useTheme } from 'primevue/usetheme';
-import Aura from '@primeuix/themes/aura';
-import Lara from '@primeuix/themes/lara';
-import { ref } from 'vue';
+import { useTheme } from "primevue/usetheme";
+import Aura from "@primeuix/themes/aura";
+import Lara from "@primeuix/themes/lara";
+import { ref } from "vue";
 
-const { setPreset, theme } = useTheme();
-const currentTheme = ref('Aura');
+const { setPreset } = useTheme();
+const currentTheme = ref("Aura");
 
 const themes = {
-    Aura: Aura,
-    Lara: Lara
+  Aura: Aura,
+  Lara: Lara,
 };
 
 const switchTheme = (themeName) => {
-    setPreset(themes[themeName]);
-    currentTheme.value = themeName;
+  setPreset(themes[themeName]);
+  currentTheme.value = themeName;
 };
 </script>
 
 <template>
-    <div class="theme-switcher">
-        <h3>当前主题：{{ currentTheme }}</h3>
-        <div class="flex gap-2">
-            <Button 
-                label="Aura 主题" 
-                @click="switchTheme('Aura')"
-                severity="primary"
-            />
-            <Button 
-                label="Lara 主题" 
-                @click="switchTheme('Lara')"
-                severity="secondary"
-            />
-        </div>
+  <div>
+    <h3>当前主题：{{ currentTheme }}</h3>
+    <div class="flex gap-2">
+      <Button label="Aura 主题" @click="switchTheme('Aura')" />
+      <Button label="Lara 主题" @click="switchTheme('Lara')" />
     </div>
+  </div>
 </template>
 ```
 
-### 五、实用技巧与最佳实践
-
-#### 1. 深色模式配置
+### 五、深色模式配置
 
 PrimeVue 内置了深色模式支持，通过配置 `darkModeSelector` 即可启用：
 
 ```javascript
 app.use(PrimeVue, {
-    theme: {
-        preset: Aura,
-        options: {
-            darkModeSelector: '.dark-mode',  // 自定义深色模式类名
-            cssLayer: {
-                name: 'primevue',
-                order: 'tailwind-base, primevue, tailwind-utilities'
-            }
-        }
-    }
+  theme: {
+    preset: Aura,
+    options: {
+      darkModeSelector: ".dark-mode",
+      cssLayer: {
+        name: "primevue",
+        order: "tailwind-base, primevue, tailwind-utilities",
+      },
+    },
+  },
 });
 ```
 
@@ -247,57 +214,43 @@ app.use(PrimeVue, {
 
 ```vue
 <script setup>
-import { useDarkMode } from 'primevue/usecolor';
+import { useDarkMode } from "primevue/usecolor";
 
 const { toggleDarkMode, isDarkMode } = useDarkMode();
 </script>
 
 <template>
-    <Button @click="toggleDarkMode" :label="isDarkMode ? '切换到亮色' : '切换到深色'" />
+  <Button
+    @click="toggleDarkMode"
+    :label="isDarkMode ? '切换到亮色' : '切换到深色'"
+  />
 </template>
 ```
 
-#### 2. 性能优化建议
+### 六、常见问题解决
 
-- **按需导入组件**：只导入需要使用的组件，减少打包体积
-- **使用 CSS 层**：配置 `cssLayer` 选项，避免样式冲突
-- **生产环境优化**：设置 `production` 模式，移除开发环境的调试代码
-
-```javascript
-app.use(PrimeVue, {
-    theme: {
-        preset: MyPreset,
-        options: {
-            production: process.env.NODE_ENV === 'production'
-        }
-    }
-});
-```
-
-#### 3. 常见问题解决
-
-**问题1：自定义的主色调不生效**
+**1. 自定义的主色调不生效**
 
 确保你在 `semantic.primary` 中定义的是 `500` 色阶，因为这是主色的默认引用色阶。
 
-**问题2：CSS 样式冲突**
+**2. CSS 样式冲突**
 
 配置 `cssLayer` 选项，明确 PrimeVue 样式与其他框架样式（如 Tailwind CSS）的加载顺序。
 
-**问题3：深色模式切换后样式异常**
+**3. 深色模式切换后样式异常**
 
 检查 `darkModeSelector` 是否与应用中的深色模式切换逻辑一致，确保深色模式的语义令牌配置完整。
 
-### 六、总结
+### 七、总结
 
 PrimeVue 的主题系统提供了从开箱即用到深度定制的完整解决方案：
 
-| 定制层级 | 使用场景 | 配置难度 | 灵活性 |
-|---------|---------|---------|--------|
-| **预设主题** | 快速原型、追求高效 | ⭐ 极低 | 低 |
-| **设计令牌** | 品牌定制、统一设计语言 | ⭐⭐ 中等 | 高 |
-| **组件覆盖** | 特定组件样式微调 | ⭐⭐⭐ 较高 | 极高 |
-| **无样式模式** | 完全自定义设计系统 | ⭐⭐⭐⭐⭐ 最高 | 完全 |
+| 定制层级   | 使用场景               | 配置难度        | 灵活性 |
+| ---------- | ---------------------- | --------------- | ------ |
+| 预设主题   | 快速原型、追求高效     | ⭐ 极低         | 低     |
+| 设计令牌   | 品牌定制、统一设计语言 | ⭐⭐ 中等       | 高     |
+| 组件覆盖   | 特定组件样式微调       | ⭐⭐⭐ 较高     | 极高   |
+| 无样式模式 | 完全自定义设计系统     | ⭐⭐⭐⭐⭐ 最高 | 完全   |
 
 **最佳实践建议：**
 
