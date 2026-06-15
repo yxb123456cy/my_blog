@@ -42,7 +42,7 @@ export const NAV_DATA: NavData[] = [
         link: "https://reactrouter.com",
       },
       {
-        // icon: "https://nextjs.org/static/favicon/safari-pinned-tab.svg",
+        icon: "/nextjs.svg",
         title: "Next.js",
         desc: "一个用于 Web 的 React 框架",
         link: "https://nextjs.org",
@@ -66,7 +66,7 @@ export const NAV_DATA: NavData[] = [
         link: "https://mobile.ant.design",
       },
       {
-        icon: "https://docs.pmnd.rs/apple-touch-icon.png",
+        icon: "https://raw.githubusercontent.com/pmndrs/zustand/main/docs/favicon.ico",
         title: "Zustand",
         desc: "一个小型、快速、可扩展的 React 状态管理解决方案",
         link: "https://docs.pmnd.rs/zustand/getting-started/introduction",
@@ -90,7 +90,7 @@ export const NAV_DATA: NavData[] = [
         link: "https://cn.redux.js.org",
       },
       {
-        // icon: "https://zh.mobx.js.org/assets/mobx.png",
+        icon: "https://zh.mobx.js.org/assets/mobx.png",
         title: "MobX",
         desc: "一个小型、快速、可扩展的 React 状态管理解决方案",
         link: "https://zh.mobx.js.org",
