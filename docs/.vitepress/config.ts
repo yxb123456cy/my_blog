@@ -86,7 +86,7 @@ export default defineConfigWithTheme({
     // 编辑链接配置
     editLink: {
       pattern:
-        "https://github.com/NtoStudy/ufovik-blog",
+        "https://github.com/yxb123456cy/my_blog",
       text: "帮我优化文章~"  // 编辑链接文本
     },
 
@@ -126,8 +126,8 @@ export default defineConfigWithTheme({
     nav: nav,
     // 社交链接配置
     socialLinks: [
-      { icon: "github", link: "https://github.com/NtoStudy" },
-      { icon: "gitee", link: "https://gitee.com/ntostudy" },
+      { icon: "github", link: "https://github.com/yxb123456cy" },
+      { icon: "gitee", link: "https://gitee.com/xiaoye123cy" },
     ],
   },
 });
